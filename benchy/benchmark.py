@@ -25,7 +25,7 @@ class Benchmark(object):
 
     def _setup(self):
         ns = globals().copy()
-        exec self.setup in ns
+        exec(self.setup in ns)
         return ns
 
     @property
@@ -33,7 +33,7 @@ class Benchmark(object):
         return hashlib.md5(self.setup + self.code + self.cleanup).hexdigest()
 
     def _cleanup(self, ns):
-        exec self.cleanup in ns
+        exec(self.cleanup in ns)
 
     def to_rst(self, results):
         output = """**Benchmark setup**
@@ -63,7 +63,7 @@ class Benchmark(object):
 
         def f(*args, **kwargs):
             for i in xrange(ncalls):
-                exec code in ns
+                exec(code in ns)
 
         prof.runcall(f)
 

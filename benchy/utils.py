@@ -163,7 +163,7 @@ def magic_timeit(ns, stmt, ncalls=None, repeat=3, force_ms=False):
     # Minimum time above which compilation time will be reported
     code = compile(src, "<magic-timeit>", "exec")
 
-    exec code in ns
+    exec(code in ns)
     timer.inner = ns["inner"]
 
     if ncalls is None:
@@ -248,16 +248,16 @@ def magic_memit(ns, stmt, ncalls=None, repeat=3, timeout=0, setup='pass',
             def put(self, x):
                 self.append(x)
         q = ListWithPut()
-        print ('WARNING: cannot import module `multiprocessing`. Forcing '
+        print('WARNING: cannot import module `multiprocessing`. Forcing '
                'the `-i` option.')
         run_in_place = True
 
     def _get_usage(q, stmt, setup='pass', ns={}):
         from memory_profiler import memory_usage as _mu
         try:
-            exec setup in ns
+            exec(setup in ns)
             _mu0 = _mu()[0]
-            exec stmt in ns
+            exec(stmt in ns)
             _mu1 = _mu()[0]
             q.put(_mu1 - _mu0)
         except Exception as e:
@@ -279,13 +279,13 @@ def magic_memit(ns, stmt, ncalls=None, repeat=3, timeout=0, setup='pass',
             else:
                 p.terminate()
                 if p.exitcode == None:
-                    print 'Subprocess timed out.'
+                    print('Subprocess timed out.')
                 else:
-                    print 'Subprocess exited with code %d.' % p.exitcode
+                    print('Subprocess exited with code %d.' % p.exitcode)
                 q.put(float('-inf'))
 
         if not at_least_one_worked:
-            print ('ERROR: all subprocesses exited unsuccessfully. Try '
+            print('ERROR: all subprocesses exited unsuccessfully. Try '
                    'again with the `-i` option.')
 
     usages = [q.get() for _ in xrange(repeat)]
